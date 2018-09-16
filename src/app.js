@@ -1,6 +1,6 @@
 const AirQuality = require('./models/air_quality.js');
 const CountrySelectView = require('./views/country_select_view.js');
-const AirQualitylistView = require('./views/aq_list_view.js');
+const AirQualityListView = require('./views/aq_list_view.js');
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log("JavaScript loaded");
@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const countrySelectView = new CountrySelectView(selectCountryContainer);
   countrySelectView.bindEvents();
 
-  // const resultsContainer = document.querySelector('#results');
-  // const airQualitylistView = new AirQualitylistView(resultsContainer);
-  // airQualitylistView.bindevents();
+  const resultsContainer = document.querySelector('#results');
+  const airQualityListView = new AirQualityListView(resultsContainer);
+  airQualityListView.bindEvents();
 
 })

@@ -1,5 +1,6 @@
 const PubSub = require('../helpers/pub_sub.js');
 const Request = require('../helpers/request.js');
+const AirQualityView = require('../views/aq_view.js');
 
 const AirQuality = function () {
   this.cities = null;
@@ -43,20 +44,18 @@ AirQuality.prototype.filterByCountry = function (selectedCountry) {
 
 AirQuality.prototype.getCityData = function (selectedCountry) {
   const cities = this.cities;
-  console.log(cities);
   cities.forEach((cityObj) => {
     const url = `https://api.airvisual.com/v2/city?city=${cityObj.city}&state=${selectedCountry}&country=uk&key=HBxwK2JGPcNi5WBaz`;
     const request = new Request(url);
     request.get()
     .then((dataObj) => {
-      console.log(dataObj.data);
       this.data.push(dataObj.data)
-      PubSub.publish('AirQuality:city-data', dataObj.data);
     })
     .catch((err) => {
       console.error(err);
     })
   })
+  PubSub.publish('AirQuality:city-data', this.data);
 };
 
 module.exports = AirQuality;
