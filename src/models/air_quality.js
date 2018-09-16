@@ -20,8 +20,8 @@ AirQuality.prototype.getListData = function () {
   const url = 'https://api.airvisual.com/v2/states?country=uk&key=HBxwK2JGPcNi5WBaz';
   const request = new Request(url);
   request.get()
-  .then((data) => {
-    PubSub.publish('AirQuality:country-list', data.data);
+  .then((dataObj) => {
+    PubSub.publish('AirQuality:country-list', dataObj.data);
   })
   .catch((err) => {
     console.error(err);
@@ -32,8 +32,8 @@ AirQuality.prototype.filterByCountry = function (selectedCountry) {
   const url = `https://api.airvisual.com/v2/cities?state=${selectedCountry}&country=uk&key=HBxwK2JGPcNi5WBaz`;
   const request = new Request(url);
   request.get()
-  .then((data) => {
-    this.cities = data.data;
+  .then((dataObj) => {
+    this.cities = dataObj.data;
     this.getCityData(selectedCountry);
   })
   .catch((err) => {
@@ -44,14 +44,14 @@ AirQuality.prototype.filterByCountry = function (selectedCountry) {
 AirQuality.prototype.getCityData = function (selectedCountry) {
   const cities = this.cities;
   console.log(cities);
-  cities.forEach((city) => {
-    const url = `https://api.airvisual.com/v2/city?city=${city.city}&state=${selectedCountry}&country=uk&key=HBxwK2JGPcNi5WBaz`;
+  cities.forEach((cityObj) => {
+    const url = `https://api.airvisual.com/v2/city?city=${cityObj.city}&state=${selectedCountry}&country=uk&key=HBxwK2JGPcNi5WBaz`;
     const request = new Request(url);
     request.get()
-    .then((data) => {
-      console.log(data.data);
-      this.data.push(data.data)
-      PubSub.publish('AirQuality:country-list', data.data);
+    .then((dataObj) => {
+      console.log(dataObj.data);
+      this.data.push(dataObj.data)
+      PubSub.publish('AirQuality:city-data', dataObj.data);
     })
     .catch((err) => {
       console.error(err);
