@@ -15,6 +15,7 @@ AirQualityListView.prototype.bindEvents = function () {
 AirQualityListView.prototype.render = function () {
   this.container.innerHTML = "";
   const cities = this.citiesData;
+  // console.log(cities);
   cities.forEach((city) => {
     console.log('has individual city data', city.data);
     const cityDetail = new AirQualityView(this.container, city)

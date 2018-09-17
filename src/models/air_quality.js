@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const Request = require('../helpers/request.js');
 const AirQualityView = require('../views/aq_view.js');
+const ApiKey = require('./api_key.js');
 
 const AirQuality = function () {
   this.cities = null;
@@ -18,7 +19,8 @@ AirQuality.prototype.bindEvents = function () {
 };
 
 AirQuality.prototype.getListData = function () {
-  const url = 'https://api.airvisual.com/v2/states?country=uk&key=HBxwK2JGPcNi5WBaz';
+  const apiKey = new ApiKey();
+  const url = `https://api.airvisual.com/v2/states?country=uk&key=${apiKey.key}`;
   const request = new Request(url);
   request.get()
   .then((dataObj) => {
@@ -30,7 +32,8 @@ AirQuality.prototype.getListData = function () {
 };
 
 AirQuality.prototype.filterByCountry = function (selectedCountry) {
-  const url = `https://api.airvisual.com/v2/cities?state=${selectedCountry}&country=uk&key=HBxwK2JGPcNi5WBaz`;
+  const apiKey = new ApiKey();
+  const url = `https://api.airvisual.com/v2/cities?state=${selectedCountry}&country=uk&key=${apiKey.key}`;
   const request = new Request(url);
   request.get()
   .then((dataObj) => {
@@ -43,9 +46,10 @@ AirQuality.prototype.filterByCountry = function (selectedCountry) {
 };
 
 AirQuality.prototype.getCityData = function (selectedCountry) {
+  const apiKey = new ApiKey();
   const cities = this.cities;
   cities.forEach((cityObj) => {
-    const url = `https://api.airvisual.com/v2/city?city=${cityObj.city}&state=${selectedCountry}&country=uk&key=HBxwK2JGPcNi5WBaz`;
+    const url = `https://api.airvisual.com/v2/city?city=${cityObj.city}&state=${selectedCountry}&country=uk&key=${apiKey.key}`;
     const request = new Request(url);
     request.get()
     .then((dataObj) => {
